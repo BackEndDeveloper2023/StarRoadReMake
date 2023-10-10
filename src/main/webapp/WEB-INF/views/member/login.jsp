@@ -41,6 +41,9 @@
                 <span id="signup_e">계정이 없으신가요?</span>
                 <a id="signup_a" href="/starroad/member">회원가입</a>
             </div>
+            <a href="naver/login">
+                    <button>네이버 로그인</button>
+                </a>
         </div>
     </article>
 </main>
