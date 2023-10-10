@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.UUID;
 
 @Api(tags = {"로그인 API"})
 @RestController
@@ -62,5 +66,24 @@ public class AuthController {
         session.invalidate();  // 세션 정보를 모두 삭제
         ModelAndView mav = new ModelAndView("redirect:/starroad");
         return mav;
+    }
+    @ApiOperation(value = "네이버 로그인 ", notes = "네이버 로그인 요청")
+    @GetMapping("/starroad/naver/login")
+    public RedirectView naverLogin(HttpSession session) {
+        String state = UUID.randomUUID().toString();
+        session.setAttribute("state", state);  // 세션에 state 값을 저장
+
+        String clientId = "ZJec90hGxnUV0ogO54kg";  // 네이버 개발자 센터에서 발급받은 Client ID
+        String redirectUri;
+        try {
+            redirectUri = URLEncoder.encode("http://localhost:8080/starroad/naver/callback", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Error: ", e);
+        }
+
+        String naverAuthUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="
+                + clientId + "&redirect_uri=" + redirectUri + "&state=" + state;
+
+        return new RedirectView(naverAuthUrl);
     }
 }
