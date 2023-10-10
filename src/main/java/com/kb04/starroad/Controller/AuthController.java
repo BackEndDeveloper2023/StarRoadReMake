@@ -86,4 +86,8 @@ public class AuthController {
 
         return new RedirectView(naverAuthUrl);
     }
+    //naver Login
+    //Client ID: ZJec90hGxnUV0ogO54kg
+    //Clinet Secrect:0iOKYkvIkd
+
 }
